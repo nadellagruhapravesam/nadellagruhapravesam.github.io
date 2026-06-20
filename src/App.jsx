@@ -13,6 +13,7 @@ const IntroExperience = lazy(() => import('./components/IntroExperience.jsx'))
 const MUSIC_VOLUME = 0.18
 const MUSIC_FADE_DURATION = 2000
 const MUSIC_SOURCE = '/audio/background-music.m4a'
+const clampMusicVolume = (volume) => Math.min(Math.max(volume, 0), MUSIC_VOLUME)
 
 export default function App() {
   const [introVisible, setIntroVisible] = useState(true)
@@ -39,14 +40,14 @@ export default function App() {
 
     const tick = (timestamp) => {
       const progress = Math.min((timestamp - startedAt) / duration, 1)
-      audio.volume = startVolume + ((targetVolume - startVolume) * progress)
+      audio.volume = clampMusicVolume(startVolume + ((targetVolume - startVolume) * progress))
 
       if (progress < 1) {
         fadeFrameRef.current = window.requestAnimationFrame(tick)
         return
       }
 
-      audio.volume = targetVolume
+      audio.volume = clampMusicVolume(targetVolume)
       fadeFrameRef.current = null
     }
 

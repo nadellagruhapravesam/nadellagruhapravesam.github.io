@@ -2,9 +2,9 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { diya1, diya2, diya3, diya4, lotusDivider } from '../assets.js'
 
 const timelineItems = [
-  { title: 'Ganapathi Puja', subtitle: 'Seeking an auspicious beginning', art: diya1 },
-  { title: 'Vastu Puja & Homam', subtitle: 'Purifying and blessing the new home', art: diya2 },
-  { title: 'Gruhapravesam', subtitle: 'Entering our home at the sacred muhurtham', art: diya3 },
+  { title: 'Gopuja', subtitle: 'Invoking divine blessings through sacred cow worship', art: diya1 },
+  { title: 'Gruhapravesam', subtitle: 'Entering our new home at the auspicious Sumuhurtham', art: diya2 },
+  { title: 'Homam & Vratam', subtitle: 'Performing sacred rituals for peace and prosperity', art: diya3 },
   { title: 'Blessings & Lunch', subtitle: 'Celebrating together with family and friends', art: diya4 },
 ]
 
