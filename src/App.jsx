@@ -22,6 +22,7 @@ export default function App() {
   const [isMuted, setIsMuted] = useState(true)
   const audioRef = useRef(null)
   const fadeFrameRef = useRef(null)
+  const wasPlayingBeforeHiddenRef = useRef(false)
 
   const stopFade = () => {
     if (fadeFrameRef.current) {
@@ -59,7 +60,34 @@ export default function App() {
     if (!audio) return undefined
     audio.volume = MUSIC_VOLUME
     audio.loop = true
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        wasPlayingBeforeHiddenRef.current = !audio.paused
+        if (wasPlayingBeforeHiddenRef.current) {
+          stopFade()
+          audio.pause()
+          setIsPlaying(false)
+        }
+        return
+      }
+
+      if (!wasPlayingBeforeHiddenRef.current) return
+      wasPlayingBeforeHiddenRef.current = false
+      audio.play()
+        .then(() => {
+          setIsMuted(false)
+          setIsPlaying(true)
+        })
+        .catch(() => {
+          setIsMuted(true)
+          setIsPlaying(false)
+        })
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
       stopFade()
       audio.pause()
     }
@@ -82,17 +110,12 @@ export default function App() {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     setHasEntered(true)
 
-    // Start both privileged actions directly inside the same user gesture.
     const audio = audioRef.current
     if (audio) {
       stopFade()
       audio.volume = 0
     }
     const playPromise = audio?.play()
-    const orientationApi = window.DeviceOrientationEvent
-    const permissionPromise = typeof orientationApi?.requestPermission === 'function'
-      ? orientationApi.requestPermission()
-      : Promise.resolve('not-required')
 
     try {
       if (!audio) throw new Error('Background audio element is not available.')
@@ -105,11 +128,6 @@ export default function App() {
       setIsPlaying(false)
     }
 
-    try {
-      await permissionPromise
-    } catch {
-      // Touch, pointer, and scroll parallax remain available without sensor access.
-    }
   }
 
   const toggleMusic = async () => {

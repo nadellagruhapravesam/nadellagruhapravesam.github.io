@@ -685,6 +685,10 @@ main section { scroll-margin-top: 88px; }
   0%, 100% { rotate: -0.8deg; }
   50% { rotate: 1deg; }
 }
+@keyframes heroTreeSwayMobile {
+  0%, 100% { rotate: -1.45deg; }
+  50% { rotate: 1.65deg; }
+}
 .hero-copy {
   order: 2;
   position: relative;
@@ -1784,6 +1788,38 @@ main section { scroll-margin-top: 88px; }
   .hero-section > .petal-field .falling-petal:nth-child(n+7) { display: block; }
 }
 
+@media (max-width: 679px) {
+  .hero-visual-stage { touch-action: pan-y; }
+  .hero-divine-crop {
+    left: -1%;
+    width: 102%;
+    height: 22%;
+    translate: 0 0;
+  }
+  .hero-house {
+    left: 10%;
+    width: 80%;
+    height: 78%;
+    translate: 0 0;
+  }
+  .hero-parents {
+    left: 23.5%;
+    width: 53%;
+    max-height: 72%;
+    translate: 0 0;
+  }
+  .hero-banana-tree {
+    width: 42%;
+    height: 72%;
+    animation-name: heroTreeSwayMobile;
+    animation-duration: 6.6s;
+  }
+  .hero-banana-tree-left { left: -5%; }
+  .hero-banana-tree-right { right: -5%; }
+  .hero-banana-tree-back-left { left: 1%; }
+  .hero-banana-tree-back-right { right: 1%; }
+}
+
 @media (max-width: 390px) {
   .hero-section { padding-top: 6rem; }
   .hero-visual-shell { width: min(100%, 25.5rem); }
@@ -1804,12 +1840,26 @@ main section { scroll-margin-top: 88px; }
     margin-top: -0.18rem;
   }
   .hero-divine-crop {
-    width: 88%;
-    height: 20%;
+    left: -2%;
+    width: 104%;
+    height: 22%;
+    translate: 0 0;
+  }
+  .hero-house {
+    left: 9%;
+    width: 82%;
+    height: 78%;
+    translate: 0 0;
+  }
+  .hero-parents {
+    left: 22.5%;
+    width: 55%;
+    max-height: 73%;
+    translate: 0 0;
   }
   .hero-banana-tree-back { display: none; }
-  .hero-banana-tree-left { left: -12%; }
-  .hero-banana-tree-right { right: -12%; }
+  .hero-banana-tree-left { left: -3%; }
+  .hero-banana-tree-right { right: -3%; }
   .hero-standing-lamp-short { display: none; }
   .hero-standing-lamp-tall {
     display: block;

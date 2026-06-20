@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import {
   motion,
   useMotionValue,
@@ -43,10 +43,17 @@ export default function HeroScene() {
   const peopleY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : 10])
   const foregroundY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : 5])
 
+  const touchActiveRef = useRef(false)
   const rawRotateX = useMotionValue(0)
   const rawRotateY = useMotionValue(0)
   const rotateX = useSpring(rawRotateX, { stiffness: 76, damping: 22, mass: 0.8 })
   const rotateY = useSpring(rawRotateY, { stiffness: 76, damping: 22, mass: 0.8 })
+
+  const resetTilt = () => {
+    touchActiveRef.current = false
+    rawRotateX.set(0)
+    rawRotateY.set(0)
+  }
 
   const updateTilt = (clientX, clientY, bounds) => {
     if (reducedMotion || window.matchMedia('(pointer: coarse)').matches) return
@@ -56,17 +63,34 @@ export default function HeroScene() {
     rawRotateX.set(py * -3)
   }
 
-  useEffect(() => {
-    if (reducedMotion) return undefined
-    const handleOrientation = (orientationEvent) => {
-      if (orientationEvent.gamma == null || orientationEvent.beta == null) return
-      rawRotateY.set(Math.max(-3, Math.min(3, orientationEvent.gamma / 11)))
-      rawRotateX.set(Math.max(-3, Math.min(3, (orientationEvent.beta - 45) / -18)))
+  const updateTouchTilt = (clientX, clientY, bounds) => {
+    if (reducedMotion) return
+    const px = (clientX - bounds.left) / bounds.width - 0.5
+    const py = (clientY - bounds.top) / bounds.height - 0.5
+    rawRotateY.set(px * 1.35)
+    rawRotateX.set(py * -1.35)
+  }
+
+  const handlePointerDown = (pointerEvent) => {
+    const coarsePointer = pointerEvent.pointerType === 'touch' || window.matchMedia('(pointer: coarse)').matches
+    if (!coarsePointer || reducedMotion) return
+    touchActiveRef.current = true
+    pointerEvent.currentTarget.setPointerCapture?.(pointerEvent.pointerId)
+    updateTouchTilt(pointerEvent.clientX, pointerEvent.clientY, pointerEvent.currentTarget.getBoundingClientRect())
+  }
+
+  const handlePointerMove = (pointerEvent) => {
+    const bounds = pointerEvent.currentTarget.getBoundingClientRect()
+    const coarsePointer = pointerEvent.pointerType === 'touch' || window.matchMedia('(pointer: coarse)').matches
+
+    if (coarsePointer) {
+      if (!touchActiveRef.current) return
+      updateTouchTilt(pointerEvent.clientX, pointerEvent.clientY, bounds)
+      return
     }
 
-    window.addEventListener('deviceorientation', handleOrientation)
-    return () => window.removeEventListener('deviceorientation', handleOrientation)
-  }, [rawRotateX, rawRotateY, reducedMotion])
+    updateTilt(pointerEvent.clientX, pointerEvent.clientY, bounds)
+  }
 
   return (
     <section id="home" ref={heroRef} className="hero-section section-shell">
@@ -107,11 +131,11 @@ export default function HeroScene() {
           <motion.div
             className="hero-visual-stage"
             style={{ rotateX, rotateY, transformPerspective: 1400, transformStyle: 'preserve-3d' }}
-            onPointerMove={(pointerEvent) => updateTilt(pointerEvent.clientX, pointerEvent.clientY, pointerEvent.currentTarget.getBoundingClientRect())}
-            onPointerLeave={() => {
-              rawRotateX.set(0)
-              rawRotateY.set(0)
-            }}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={resetTilt}
+            onPointerCancel={resetTilt}
+            onPointerLeave={resetTilt}
           >
             <div className="hero-stage-glow" aria-hidden="true" />
             <div className="hero-ground" aria-hidden="true" />
