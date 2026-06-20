@@ -564,12 +564,12 @@ main section { scroll-margin-top: 88px; }
 }
 .hero-divine-crop {
   top: 4%;
-  left: 50%;
+  left: 7%;
   z-index: 4;
   width: 86%;
   height: 20%;
   overflow: hidden;
-  translate: -50% 0;
+  translate: 0 0;
   transform: translateZ(-5px);
   filter: drop-shadow(0 11px 12px rgba(69, 37, 19, 0.1));
 }
@@ -580,7 +580,7 @@ main section { scroll-margin-top: 88px; }
   object-position: center top;
 }
 .hero-house {
-  left: 50%;
+  left: 14%;
   top: 17%;
   z-index: 1;
   width: 72%;
@@ -588,7 +588,7 @@ main section { scroll-margin-top: 88px; }
   object-fit: contain;
   object-position: center top;
   opacity: 0.56;
-  translate: -50% 0;
+  translate: 0 0;
   transform: translateZ(-30px);
   filter: saturate(0.82) contrast(0.92) brightness(1.06) drop-shadow(0 12px 22px rgba(69, 42, 18, 0.08));
   mask-image: radial-gradient(ellipse at 50% 47%, #000 0 52%, rgba(0, 0, 0, 0.62) 68%, transparent 90%);
@@ -630,22 +630,22 @@ main section { scroll-margin-top: 88px; }
   transform: translateZ(10px);
 }
 .hero-lotus-ground {
-  left: 50%;
+  left: 34%;
   bottom: 0.6%;
   z-index: 4;
   width: 32%;
   opacity: 0.24;
-  translate: -50% 0;
+  translate: 0 0;
 }
 .hero-parents {
-  left: 50%;
+  left: 27%;
   bottom: 2%;
   z-index: 6;
   width: 46%;
   max-height: 70%;
   object-fit: contain;
   object-position: center bottom;
-  translate: -50% 0;
+  translate: 0 0;
   transform: translateZ(45px);
   filter: drop-shadow(0 20px 24px rgba(63, 35, 18, 0.14));
 }
@@ -1710,10 +1710,12 @@ main section { scroll-margin-top: 88px; }
   }
   .hero-divine-crop {
     top: 4%;
+    left: 12%;
     width: 76%;
     height: 22%;
   }
   .hero-house {
+    left: 18%;
     top: 18%;
     width: 64%;
     height: 76%;
@@ -1742,6 +1744,7 @@ main section { scroll-margin-top: 88px; }
   .hero-banana-tree-back-left { left: -3%; }
   .hero-banana-tree-back-right { right: -3%; }
   .hero-parents {
+    left: 28%;
     bottom: 1.5%;
     width: 44%;
     max-height: 72%;
